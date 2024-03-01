@@ -1,0 +1,44 @@
+<div class="d-flex flex-column justify-content-center align-items-center">
+    <h1 class="p-2">All recipes</h1>
+
+    <div class="container-sm max-auto">
+        <input type="text" [(ngModel)]="searchKey" name="search" id="search" placeholder="Search by name or cuisine..."
+            class="form-control w-75 mx-auto rounded border-1" />
+        <div class="p-3 text-center fs-5">
+            Meal Type : <input type="checkbox" class="form-check-input" id="lunch" [(ngModel)]="filters.lunch"
+                (change)="updateFilterList()" /> <label for="lunch">&nbsp; Lunch</label> &nbsp;&nbsp;
+            <input type="checkbox" class="form-check-input" id="dinner" [(ngModel)]="filters.dinner"
+                (change)="updateFilterList()" /> <label for="dinner"> &nbsp;Dinner</label> &nbsp;&nbsp;
+            <input type="checkbox" class="form-check-input" id="snack" [(ngModel)]="filters.snacks"
+                (change)="updateFilterList()" /> <label for="snack">&nbsp; Snack</label>&nbsp;&nbsp;
+                <input type="checkbox" class="form-check-input" id="dessert" [(ngModel)]="filters.dessert"
+                (change)="updateFilterList()" /> <label for="dessert">&nbsp; Dessert</label>
+        </div>
+        <div class="row pb-5">
+            <div *ngFor="let recipe of allRecipes | search :searchKey |filters :filterList |paginate: {itemsPerPage:12, currentPage:page} ;let i=index"
+                class="col-lg-4 col-md-6">
+                
+                    <div class="card mx-auto my-3 shadow border-0" style="width: 18rem;cursor: pointer;" routerLink="/{{recipe.id}}">
+                        <img [src]="recipe.image" class="card-img-top" alt="image">
+                        <div class="card-body">
+                            <h5 class="card-title pb-0 mb-0">{{recipe.name}}</h5>
+                            <p class="p-0snacks m-0 text-secondary">{{recipe.cuisine}}</p>
+                            <div class="d-flex justify-content-between">
+                                <p class="card-text"><i class="fa-solid fa-clock"></i>
+                                    {{recipe.prepTimeMinutes+recipe.cookTimeMinutes}} min</p>
+                                <p class="card-text"><i class="fa-solid fa-fire"></i> {{recipe.caloriesPerServing}}
+                                    Cal/serving</p>
+                            </div>
+                            <!-- <div class="d-flex justify-content-between align-items-center"> -->
+                                <igc-rating value="ratingVal" min="1" max="5" [value]="recipe.rating"
+                                    style="color: rgb(237, 225, 0);"></igc-rating>
+        
+                                <!-- <a routerLink="/{{recipe.id}}" class="btn btn-primary">Full recipe</a> -->
+                            <!-- </div> -->
+                        </div>
+                    </div>
+            </div>
+            <div class="text-center pt-5"><pagination-controls (pageChange)="page = $event"></pagination-controls></div>
+        </div>
+    </div>
+</div>
